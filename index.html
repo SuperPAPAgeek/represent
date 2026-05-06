@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BANAKEY × REPRESENT — Creative Drop Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E8001D;
+    --gold: #C9A84C;
+    --black: #080808;
+    --white: #F5F0E8;
+    --gray: #1A1A1A;
+    --mid: #2E2E2E;
+    --accent: #FF4D00;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 40px 20px;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 40% at 20% 60%, rgba(232,0,29,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 80% 30%, rgba(201,168,76,0.1) 0%, transparent 60%),
+      var(--black);
+  }
+
+  .hero-diagonal {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -55deg,
+      transparent,
+      transparent 80px,
+      rgba(255,255,255,0.012) 80px,
+      rgba(255,255,255,0.012) 81px
+    );
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 14vw, 180px);
+    line-height: 0.88;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-title .line-red { color: var(--red); display: block; }
+  .hero-title .line-gold { color: var(--gold); display: block; font-size: 0.45em; letter-spacing: 0.12em; }
+
+  .hero-sub {
+    font-size: clamp(14px, 2.5vw, 20px);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: rgba(245,240,232,0.6);
+    text-align: center;
+    margin-top: 32px;
+    max-width: 600px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 16px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .badge {
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 8px 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,168,76,0.05);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  .scroll-hint span {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: rgba(245,240,232,0.3);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 100px 5vw;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--red);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.95;
+    margin-bottom: 48px;
+  }
+
+  /* ─── CONCEPTO ─── */
+  .concepto {
+    background: var(--gray);
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .concepto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .concepto-block {
+    background: var(--black);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .concepto-block:hover { transform: translateY(-4px); }
+
+  .concepto-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+    transform-origin: left;
+  }
+
+  .concepto-block:hover::before { transform: scaleX(1); }
+
+  .block-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: rgba(255,255,255,0.04);
+    position: absolute;
+    top: 16px; right: 24px;
+    line-height: 1;
+  }
+
+  .block-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .block-body {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.75);
+  }
+
+  .concept-hero-statement {
+    border-left: 4px solid var(--red);
+    padding: 32px 40px;
+    background: rgba(232,0,29,0.05);
+    margin-bottom: 60px;
+  }
+
+  .concept-hero-statement p {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 4vw, 52px);
+    line-height: 1.1;
+    color: var(--white);
+  }
+
+  .concept-hero-statement p em {
+    color: var(--red);
+    font-style: normal;
+  }
+
+  /* ─── TALENTS ─── */
+  .talents { background: var(--black); }
+
+  .talents-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 60px;
+  }
+
+  .talent-card {
+    position: relative;
+    padding: 48px;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .talent-card:hover { border-color: var(--gold); }
+
+  .talent-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 200px;
+    pointer-events: none;
+  }
+
+  .talent-card.gracy::after {
+    background: linear-gradient(to top, rgba(232,0,29,0.08), transparent);
+  }
+
+  .talent-card.lola::after {
+    background: linear-gradient(to top, rgba(201,168,76,0.08), transparent);
+  }
+
+  .talent-handle {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    margin-bottom: 24px;
+  }
+
+  .talent-card.gracy .talent-handle { color: var(--red); }
+  .talent-card.lola .talent-handle { color: var(--gold); }
+
+  .talent-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 0.9;
+    margin-bottom: 24px;
+  }
+
+  .talent-role {
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-bottom: 32px;
+  }
+
+  .talent-desc {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.7);
+    margin-bottom: 32px;
+  }
+
+  .talent-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    padding: 5px 14px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(245,240,232,0.5);
+  }
+
+  /* ─── PRODUCTO ─── */
+  .producto { background: var(--gray); }
+
+  .producto-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .producto-item {
+    background: var(--black);
+    padding: 40px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .producto-item:hover { background: #0F0F0F; }
+
+  .producto-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .producto-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .producto-detail {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.5);
+    line-height: 1.6;
+  }
+
+  .producto-note {
+    margin-top: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+  }
+
+  /* ─── PALETA ─── */
+  .paleta-grid {
+    display: flex;
+    gap: 12px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+
+  .color-chip {
+    flex: 1;
+    min-width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 16px;
+    position: relative;
+  }
+
+  .color-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .color-hex {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    opacity: 0.6;
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline { background: var(--black); }
+
+  .timeline-track {
+    position: relative;
+    margin-top: 80px;
+    padding-left: 40px;
+  }
+
+  .timeline-track::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--red), var(--gold), transparent);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 56px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .tl-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: -36px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--red);
+    background: var(--black);
+  }
+
+  .tl-dot.gold { border-color: var(--gold); }
+  .tl-dot.filled { background: var(--red); }
+  .tl-dot.gold.filled { background: var(--gold); }
+
+  .tl-month {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--red);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .tl-month.gold { color: var(--gold); }
+
+  .tl-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  .tl-tasks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tl-tasks li {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.65);
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .tl-tasks li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: rgba(245,240,232,0.25);
+  }
+
+  /* ─── SESIÓN CREATIVA ─── */
+  .sesion { background: var(--gray); }
+
+  .sesion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 60px;
+  }
+
+  .sesion-block {
+    padding: 40px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: var(--black);
+  }
+
+  .sesion-block-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sesion-block-title::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .shot-list { list-style: none; }
+
+  .shot-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.7);
+    display: flex;
+    gap: 12px;
+  }
+
+  .shot-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--red);
+    flex-shrink: 0;
+    padding-top: 3px;
+  }
+
+  /* ─── ESTRATEGIA ─── */
+  .estrategia { background: var(--black); }
+
+  .estrategia-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .canal-block {
+    background: var(--gray);
+    padding: 36px 28px;
+    position: relative;
+  }
+
+  .canal-icon { font-size: 32px; margin-bottom: 16px; display: block; }
+
+  .canal-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: var(--gold);
+  }
+
+  .canal-desc {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.6;
+    color: rgba(245,240,232,0.6);
+  }
+
+  /* ─── CIERRE ─── */
+  .cierre {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: var(--gray);
+    position: relative;
+    overflow: hidden;
+    padding: 100px 5vw;
+  }
+
+  .cierre-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(232,0,29,0.12) 0%, transparent 70%);
+  }
+
+  .cierre-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 10vw, 140px);
+    line-height: 0.9;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .cierre-title span { color: var(--red); }
+
+  .cierre-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    margin-top: 32px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.1em;
+  }
+
+  .nav-logo span { color: var(--red); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
+    margin: 0 5vw;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .concepto-grid,
+    .talents-grid,
+    .sesion-grid { grid-template-columns: 1fr; }
+    .producto-items { grid-template-columns: 1fr 1fr; }
+    .estrategia-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">BANAKEY<span>×</span>REPRESENT</div>
+  <ul class="nav-links">
+    <li><a href="#concepto">Concepto</a></li>
+    <li><a href="#producto">Producto</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#estrategia">Lanzamiento</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-diagonal"></div>
+  <p class="hero-eyebrow">Banakey Drop — Edición Especial Rumbo a Toronto</p>
+  <h1 class="hero-title">
+    <span class="line-red">REPRESENT</span>
+    España
+    <span class="line-gold">B-Boy Gracy & Lola the Princes Warrior</span>
+  </h1>
+  <p class="hero-sub">El drop que acompaña a dos de los mejores breakers de España al campeonato de breaking más grande del mundo.</p>
+  <div class="hero-badges">
+    <span class="badge">Toronto 2025</span>
+    <span class="badge">Collab Drop</span>
+    <span class="badge">Edición Limitada</span>
+    <span class="badge">Oct / Nov 2025</span>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CONCEPTO ── -->
+<section class="concepto" id="concepto">
+  <p class="section-label">01 — Concepto Creativo</p>
+  <h2 class="section-title">LA IDEA</h2>
+
+  <div class="concept-hero-statement">
+    <p>Dos guerreros. <em>Una bandera.</em><br>El breaking español rumbo a Toronto.</p>
+  </div>
+
+  <div class="concepto-grid">
+    <div class="concepto-block">
+      <span class="block-num">01</span>
+      <h3 class="block-title">El Nombre del Drop</h3>
+      <p class="block-body">
+        <strong style="color:var(--white)">"REPRESENT"</strong> — No es solo ropa. Es una declaración. Cada prenda es el uniforme de quien va a representar a España en el campeonato mundial. Quien la lleva puesta también representa. También es de los suyos.
+      </p>
+    </div>
+    <div class="concepto-block">
+      <span class="block-num">02</span>
+      <h3 class="block-title">El Territorio</h3>
+      <p class="block-body">
+        Breakdance + moda urbana de autor + orgullo nacional. El aesthetic no es sportswear genérico — es cultura. Grafismo raw, tipografía de impacto, paleta España pero destilada. Sin banderas literales. Con actitud.
+      </p>
+    </div>
+    <div class="concepto-block">
+      <span class="block-num">03</span>
+      <h3 class="block-title">El Arco Narrativo</h3>
+      <p class="block-body">
+        El drop sale <em style="color:var(--gold)">antes de que empiece la competición</em> — la comunidad lleva la prenda puesta cuando Gracy y Lola suben al escenario. La historia se cuenta en capítulos: acuerdo → diseño → sesión → lanzamiento → Toronto.
+      </p>
+    </div>
+    <div class="concepto-block">
+      <span class="block-num">04</span>
+      <h3 class="block-title">La Propuesta de Valor</h3>
+      <p class="block-body">
+        Para el fan: cercanía con sus referentes. Para los breakers: visibilidad + royalties. Para Banakey: posicionamiento en el mundo del breaking español con credibilidad real, no paid content.
+      </p>
+    </div>
+  </div></section>
+
+<div class="divider"></div>
+
+<!-- ── TALENTS ── -->
+<section class="talents" id="talents">
+  <p class="section-label">02 — Los Talentos</p>
+  <h2 class="section-title">LAS CARAS</h2>
+  <div class="talents-grid">
+    <div class="talent-card gracy">
+      <p class="talent-handle">@bboygracy</p>
+      <h3 class="talent-name">B-BOY GRACY</h3>
+      <p class="talent-role">B-Boy · Representante España · Rumbo a Toronto</p>
+      <p class="talent-desc">
+        Uno de los b-boys más potentes del panorama español. Su estilo combina potencia y musicalidad — exactamente lo que hay que transmitir en el visual del drop. Su historia habla sola.
+      </p>
+      <div class="talent-tags">
+        <span class="tag">Power moves</span>
+        <span class="tag">Footwork</span>
+        <span class="tag">España</span>
+        <span class="tag">Toronto 2025</span>
+      </div>
+    </div>
+    <div class="talent-card lola">
+      <p class="talent-handle">@lola_theprinceswarrior</p>
+      <h3 class="talent-name">LOLA<br>THE PRINCES WARRIOR</h3>
+      <p class="talent-role">B-Girl · Representante España · Rumbo a Toronto</p>
+      <p class="talent-desc">
+        El nombre ya es un statement. Princes Warrior — nobleza y guerra al mismo tiempo. Estilo dinámico y presencia escénica que se traduce directamente en campaña. Una máquina de contenido visual.
+      </p>
+      <div class="talent-tags">
+        <span class="tag">Freezes</span>
+        <span class="tag">Style</span>
+        <span class="tag">España</span>
+        <span class="tag">Toronto 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Propuesta collab -->
+  <div style="margin-top:60px; padding:48px; border:1px solid rgba(201,168,76,0.2); background:rgba(201,168,76,0.03)">
+    <p class="section-label" style="margin-bottom:24px">Estructura de la Collab</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:32px">
+      <div>
+        <p style="font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--gold); margin-bottom:8px">Banakey Pone</p>
+        <ul style="list-style:none; font-size:14px; font-weight:300; color:rgba(245,240,232,0.65); line-height:2">
+          <li>— Producción de ropa</li>
+          <li>— Sesión foto / vídeo</li>
+          <li>— Tienda online</li>
+          <li>— Gestión del drop</li>
+          <li>— Logística</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--gold); margin-bottom:8px">Ellos Ponen</p>
+        <ul style="list-style:none; font-size:14px; font-weight:300; color:rgba(245,240,232,0.65); line-height:2">
+          <li>— Imagen y cara</li>
+          <li>— Contenido RRSS</li>
+          <li>— Su comunidad</li>
+          <li>— Autenticidad</li>
+          <li>— Movimiento real</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--red); margin-bottom:8px">Resultado</p>
+        <ul style="list-style:none; font-size:14px; font-weight:300; color:rgba(245,240,232,0.65); line-height:2">
+          <li>— Royalties x unidad</li>
+          <li>— Prendas free (lookbook)</li>
+          <li>— Drop limitado</li>
+          <li>— Visibilidad mutua</li>
+          <li>— Sin stock previo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PRODUCTO ── -->
+<section class="producto" id="producto">
+  <p class="section-label">03 — Producto</p>
+  <h2 class="section-title">EL DROP</h2>
+  <p style="font-size:16px; font-weight:300; color:rgba(245,240,232,0.6); max-width:600px; margin-bottom:0">
+    Colección cápsula de 4 referencias. Producción bajo demanda, sin stock — puro modelo Banakey. Diseño único creado específicamente para este drop, no catálogo genérico.
+  </p>
+
+  <div class="producto-items" style="grid-template-columns:repeat(2,1fr)">
+    <div class="producto-item">
+      <p class="producto-name">Camiseta Técnica Gracy</p>
+      <p class="producto-detail">Técnica de alto rendimiento, sublimación total. Diseño exclusivo de B-Boy Gracy. Funcional para entrenar y competir. Edición nominativa.</p>
+      <p class="producto-note">★ Pieza exclusiva</p>
+    </div>
+    <div class="producto-item">
+      <p class="producto-name">Camiseta Técnica Lola</p>
+      <p class="producto-detail">Técnica de alto rendimiento, sublimación total. Diseño exclusivo de Lola the Princes Warrior. Misma base, identidad propia. Edición nominativa.</p>
+      <p class="producto-note">★ Pieza exclusiva</p>
+    </div>
+    <div class="producto-item">
+      <p class="producto-name">Camiseta Oversize</p>
+      <p class="producto-detail">Algodón pesado 240gsm. Fit oversized. Gráfico REPRESENT España en espalda. La pieza lifestyle del drop — para llevar fuera de la pista.</p>
+      <p class="producto-note">Hero piece del drop</p>
+    </div>
+    <div class="producto-item">
+      <p class="producto-name">Crop Top</p>
+      <p class="producto-detail">Corte femenino. Algodón o técnico. Para b-girls y comunidad. Amplía el alcance del drop más allá del público masculino.</p>
+      <p class="producto-note">Pieza femenina</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── TIMELINE ── -->
+<section class="timeline" id="timeline">
+  <p class="section-label">04 — Planificación</p>
+  <h2 class="section-title">ROADMAP</h2>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start">
+    <div class="timeline-track">
+
+      <div class="tl-item" data-delay="0">
+        <div class="tl-dot filled"></div>
+        <p class="tl-month">Fase siguiente</p>
+        <h4 class="tl-title">FASE 0: ACUERDO</h4>
+        <ul class="tl-tasks">
+          <li>B-Boy Gracy: acuerdo cerrado</li>
+          <li>Cerrar acuerdo con Lola (reunión pendiente)</li>
+          <li>Alineación en concepto y nombre del drop</li>
+          <li>Confirmar fechas sesión</li>
+        </ul>
+      </div>
+
+      <div class="tl-item" data-delay="100">
+        <div class="tl-dot"></div>
+        <p class="tl-month">Fase siguiente</p>
+        <h4 class="tl-title">FASE 1: DISEÑO</h4>
+        <ul class="tl-tasks">
+          <li>Diseño de gráficos y artes finales</li>
+          <li>Selección de prendas y materiales</li>
+          <li>Moodboard visual aprobado por ambos</li>
+          <li>Muestra de producto (si da tiempo)</li>
+        </ul>
+      </div>
+
+      <div class="tl-item" data-delay="200">
+        <div class="tl-dot gold"></div>
+        <p class="tl-month gold">Fase 2</p>
+        <h4 class="tl-title">FASE 2: SESIÓN</h4>
+        <ul class="tl-tasks">
+          <li>Sesión de foto + vídeo (1–2 días)</li>
+          <li>Edición y selección de contenido</li>
+          <li>Creación de assets por formato</li>
+          <li>Revisión y aprobación con ambos</li>
+        </ul>
+      </div>
+
+      <div class="tl-item" data-delay="300">
+        <div class="tl-dot gold filled"></div>
+        <p class="tl-month gold">Fase 3</p>
+        <h4 class="tl-title">FASE 3: TIENDA</h4>
+        <ul class="tl-tasks">
+          <li>Montar tienda del drop en Banakey</li>
+          <li>Ficha de productos + fotos</li>
+          <li>Teaser en RRSS (modo sigiloso)</li>
+          <li>Prenda de muestra confirmada</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="timeline-track">
+
+      <div class="tl-item" data-delay="400">
+        <div class="tl-dot filled" style="border-color:var(--accent); background:var(--accent)"></div>
+        <p class="tl-month">Fase siguiente</p>
+        <h4 class="tl-title">FASE 4: LANZAMIENTO</h4>
+        <ul class="tl-tasks">
+          <li>Campaña de expectativa 1 semana antes</li>
+          <li>Drop oficial — apertura tienda</li>
+          <li>Reel de lanzamiento coordinado</li>
+          <li>Stories de los breakers el día del drop</li>
+          <li>Ventana de pedidos: 2–3 semanas</li>
+        </ul>
+      </div>
+
+      <div class="tl-item" data-delay="500">
+        <div class="tl-dot gold filled"></div>
+        <p class="tl-month gold">Fase 5</p>
+        <h4 class="tl-title">FASE 5: RECAP + ENVÍOS</h4>
+        <ul class="tl-tasks">
+          <li>Vídeo recap de la experiencia</li>
+          <li>Envío de pedidos</li>
+          <li>Agradecimiento a comunidad</li>
+          <li>Análisis de resultados del drop</li>
+          <li>Plantear siguiente collab</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ESTRATEGIA LANZAMIENTO ── -->
+<section class="estrategia" id="estrategia">
+  <p class="section-label">05 — Estrategia de Lanzamiento</p>
+  <h2 class="section-title">EL RUIDO</h2>
+
+  <div class="estrategia-grid">
+    <div class="canal-block">
+      
+      <p class="canal-name">Instagram</p>
+      <p class="canal-desc">Canal principal. Reels de acción, carruseles de producto, countdown stories. Los breakers postean en sus cuentas + repost a @itsbanakey. Coordinar mismo día y hora.</p>
+    </div>
+    <div class="canal-block">
+      
+      <p class="canal-name">TikTok</p>
+      <p class="canal-desc">Vídeo de breaking con prenda. Dueto/stitch entre ellas dos. Formato viral nativo — no el mismo reel de IG. Hay comunidad breaking muy activa en TikTok.</p>
+    </div>
+    <div class="canal-block">
+      
+      <p class="canal-name">YouTube Shorts</p>
+      <p class="canal-desc">BTS de sesión + clip de la sesión de baile. Long tail — el contenido queda indexado para siempre y llega a audiencia nueva.</p>
+    </div>
+    <div class="canal-block">
+      
+      <p class="canal-name">Comunidad Breaking ES</p>
+      <p class="canal-desc">Notificar a jams, crews, organizers. El mundo del breaking en España es pequeño y unido. El boca a boca vale más que cualquier anuncio.</p>
+    </div>
+    <div class="canal-block">
+      
+      <p class="canal-name">Email / WhatsApp Banakey</p>
+      <p class="canal-desc">Notificar a clubs de la base de datos. El breaking no es su deporte principal pero el drop es cultural — y cualquier deportista entiende el respeto al que representa.</p>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div style="margin-top:60px; padding:48px; border:1px solid rgba(232,0,29,0.2); background:rgba(232,0,29,0.03)">
+    <p class="section-label" style="margin-bottom:32px">Métricas de Éxito</p>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:2px">
+      <div style="background:var(--gray); padding:32px 24px; text-align:center">
+        <p style="font-family:'Bebas Neue',sans-serif; font-size:56px; color:var(--red); line-height:1">100+</p>
+        <p style="font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(245,240,232,0.5)">Pedidos<br>objetivo</p>
+      </div>
+      <div style="background:var(--gray); padding:32px 24px; text-align:center">
+        <p style="font-family:'Bebas Neue',sans-serif; font-size:56px; color:var(--gold); line-height:1">20K</p>
+        <p style="font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(245,240,232,0.5)">Alcance orgánico<br>en lanzamiento</p>
+      </div>
+      <div style="background:var(--gray); padding:32px 24px; text-align:center">
+        <p style="font-family:'Bebas Neue',sans-serif; font-size:56px; color:var(--white); line-height:1">2</p>
+        <p style="font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(245,240,232,0.5)">Comunidades<br>nuevas activadas</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CIERRE ── -->
+<section class="cierre" id="cierre">
+  <div class="cierre-bg"></div>
+  <h2 class="cierre-title">SPAIN<br><span>REPRESENTS</span></h2>
+  <p class="cierre-sub">Banakey × B-Boy Gracy × Lola the Princes Warrior — Toronto 2025</p>
+  <p style="margin-top:48px; font-size:14px; font-weight:300; color:rgba(245,240,232,0.35); font-family:'Space Mono',monospace; letter-spacing:0.15em; position:relative; z-index:2">
+    CREATIVE DECK v1.0 — CONFIDENCIAL — BANAKEY 2025
+  </p>
+</section>
+
+<script>
+  // Scroll reveal para timeline items
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, parseInt(delay));
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.tl-item').forEach(el => observer.observe(el));
+
+  // Nav color on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      nav.style.background = 'rgba(8,8,8,0.97)';
+    } else {
+      nav.style.background = 'linear-gradient(to bottom, rgba(8,8,8,0.95), transparent)';
+    }
+  });
+</script>
+
+</body>
+</html>
